@@ -73,7 +73,7 @@ class ReleaseWorkflow:
        
         
 
-        logging.info("%s: Release success", deploy_status)
+        #logging.info("%s: Release success", deploy_status)
         return deploy_status
     
 
