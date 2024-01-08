@@ -1,8 +1,4 @@
-# temporal-release-orchestrator-demo-python
-A release orchestration demo in python
-
-
-# Temporal Idempotence By Validation Demo
+# Temporal Release Orchestration Demo App
 This is a simple [Temporal](https://temporal.io/) demo in Python that orchestrates a release process, made up of one to many deploys, to one to many environments.
 
 ## Releasing is a Troublesome Process
