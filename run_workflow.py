@@ -13,10 +13,15 @@ async def main():
     # todo create inputs
     # todo create a signal to approve
 
-    deploy_input = ReleaseInfo(release_key="RELEASE-JAN-24-ALPHA", release_date= "2024-01-14", approved=True, approved_by="Joshua Smith")
+    release_input = ReleaseInfo(release_key="RELEASE-JAN-24-ALPHA", 
+                                release_date= "2024-01-14", 
+                                approved=True, 
+                                approved_by="Joshua Smith",
+                                deploys=[],
+                                )
     # Execute a workflow
     result = await client.execute_workflow(
-        ReleaseWorkflow.run, deploy_input, id="release-workflow", task_queue="release-task-queue"
+        ReleaseWorkflow.run, release_input, id=f"release-workflow:{release_input.release_key}", task_queue="release-task-queue"
     )
 
     print(f"Result: {result}")

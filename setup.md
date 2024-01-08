@@ -1,4 +1,37 @@
 # Setup
+Clone the repo :
+```shell
+git clone https://github.com/joshmsmith/temporal-release-orchestrator-demo-python
+```
+
+Follow the [temporal setup](https://learn.temporal.io/getting_started/python/hello_world_in_python/?os=mac)
+```shell
+python3 -m venv env
+source env/bin/activate
+python -m pip install temporalio
+python -m pip install pytest
+python -m pip install pytest_asyncio
+
+pip install coloredlogs
+```
+
+Start the temporal server (or setup for cloud, see below):
+```shell
+temporal server start-dev
+```
+The Temporal Server will be available on localhost:7233.
+The Temporal Web UI will be available at http://localhost:8233.
+
+Run the worker:
+```shell
+python run_worker.py 
+```
+
+Run the workflow:
+```shell
+python run_workflow.py 
+```
+
 You need to have a Temporal server up and running and Go installed. This currently uses temporal cloud but you can configure it to use local.
 
 CLone the repo :
@@ -60,15 +93,6 @@ export DATABASEPATH=database/
 ```
 
 
-Then start the worker :
-```shell
-go run workers/main.go
-```
-
-And finally, test with :
-```shell 
-go run starter/main.go
-```
 
 ## Other Things To Try
 Check out more stuff in [demos.md](./demos.md)
