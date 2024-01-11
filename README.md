@@ -14,7 +14,7 @@ A release is a complex process: orchestrating multiple failure-possible subproce
     6. Verify deploy
 4. Summarize Release success
 
-**Output:** environmentsa are updated with new artifacts, and the process was successful and **well-understood**.
+**Output:** environments are updated with new artifacts, and the process was successful and **well-understood**.
 
 Manual deployment is often error-prone, as people aren't really great at doing the repetitive complex tasks perfectly over and over under pressure.
 
