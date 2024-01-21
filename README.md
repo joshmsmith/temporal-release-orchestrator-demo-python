@@ -54,25 +54,15 @@ While working on this project, I created **many** bugs in my activities, and all
 
 
 ## Process Results
-todo fill this out
+This demo will create "artifacts" created by a "build" system. For the demo, these are just empty files in the [environments](./environments/) folder. The artifacts are built according to the rules of the release process.
+The demo will also deploy these artifacts to the environments, and orchestrate a release made up of a set of related deployments.
 
-The code in [starter](./starter/main.go) demonstrates the workflow. Initially, there are only a couple sample tickets in our "[database](./database/)". After ticket creation, you will see more created there.
-
-Here is a sample ticket:
-
-```json
-{
-    "orderID": "order-112358",
-    "ticketID": "TICKET-42618",
-    "paymentInfo": "VISA-5197-988-3381-2526"
-}
-```
-
+This release process executes durably, and is guaranteed to finish once it begins per the rules specified in the [workflows](./workflows.py).
 
 # Getting Started
 See [Setup Instructions](./setup.md).
 
-### First Demo
+## First Demo
 After the setup is done, you can do the  basic demo described in the [setup instructions](./setup.md). 
 You can see an order get processed, maybe fail randomly.
 
@@ -81,3 +71,4 @@ You can see an order get processed, maybe fail randomly.
 1. Check out the ways to [demonstrate that this works nicely](./demos.md)
 2. Play around with the code in new ways, try to break Temporal, maybe try some [retry policies](https://docs.temporal.io/retry-policies#:~:text=A%20Retry%20Policy%20works%20in,or%20an%20Activity%20Task%20Execution.) 
 3. Feel free to fork and contribute!
+4. Implement your release process with Temporal and enjoy Durable Releases.

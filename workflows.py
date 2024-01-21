@@ -128,7 +128,7 @@ class DeployWorkflow:
             # if services depend on each other being new: ERROR AND ROLL FORWARD ONLY or roll back the entire thing
             # if services don't depend on new changes as a rule, roll back
             # container error, saga it, roll back with compensation?
-            # config error -> we're fucked; sorry... // could make a copy but ehh
+            # config error -> we're screwed; sorry... // could make a copy but ehh
             # keep retrying for unknown errors so they can be fixed and parent can be ok.
             # notification: command line, UI, and slack
             # user input: wait for something to be fixed (josh calls this "roll forward") or roll back to last good state ( config+container) or fall down (roll over)
@@ -184,8 +184,9 @@ class ReleaseWorkflow:
         # 2. collect approval (and eventually schedule info)
         if not release.approved:
             logging.info(f"Release {input.release_key} not yet approved, gathering approval now.")
+            # todo consider: may want to let these all run async or stage them env by env
             release = await workflow.execute_activity(
-                    collect_release_approval, input, start_to_close_timeout=timedelta(seconds=5)
+                    collect_release_approval, input, start_to_close_timeout=timedelta(seconds=15)
                 )
 
         # 2.a eventually this could just run on a schedule so add schedule stuff
@@ -232,7 +233,7 @@ class ReleaseWorkflow:
     # if services depend on each other being new: ERROR AND ROLL FORWARD ONLY or roll back the entire thing
     # if services don't depend on new changes as a rule, roll back
     # container error, saga it, roll back with compensation?
-    # config error -> we're fucked; sorry... // could make a copy but ehh
+    # config error -> we're toast; sorry... // could make a copy but ehh
     # keep retrying for unknown errors so they can be fixed and parent can be ok.
     # notification: command line, UI, and slack
     # user input: wait for something to be fixed (josh calls this "roll forward") or roll back to last good state ( config+container) or fall down (roll over)

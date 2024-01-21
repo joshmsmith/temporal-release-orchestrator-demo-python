@@ -1,3 +1,5 @@
+import shutil
+import glob, os
 import coloredlogs, logging
 from dataclasses import dataclass
 from release_dataclasses import DeployInfo, ReleaseInfo
@@ -15,7 +17,8 @@ development =       "DEV"
 def gather_deployments(release_info: ReleaseInfo) -> ReleaseInfo:
     """ collect_releases: gather all releases for this deploy
     
-    In a real system this could look up the info for each deploy, here it is mocked. """
+    In a real system this could look up the info for each deploy such as via an API in e.g. JIRA. 
+    Here it is mocked. """
     
     logging.debug("Collecting Release Info for %s ", release_info.release_key)
 
@@ -25,39 +28,211 @@ def gather_deployments(release_info: ReleaseInfo) -> ReleaseInfo:
     
     
     # mock gather things to deploy: for this purpose we'll just make some things up
+    if release_info.release_key == "RELEASE-DEC-2023-BUGFIXES-PROD":
 
-    deploy_frontend = DeployInfo(deploy_key= release_info.release_key+":frontend", 
-                                 container_id= "frontend", 
-                                 container_version="1.1", 
-                                 git_url="https://github.com/mybiz/coolfrontend", 
-                                 approved=True, 
-                                 approved_by="Josh Smith", 
-                                 envs=[production],
-                                 release_key=release_info.release_key,
-    )
-    logging.info(f"Deploy Info for { deploy_frontend.deploy_key} collected.")
+          deploy_frontend = DeployInfo(deploy_key= release_info.release_key+":frontend", 
+                                        container_id= "frontend", 
+                                        container_version="1.1", 
+                                        git_url="https://github.com/mybiz/coolfrontend", 
+                                        approved=True, 
+                                        approved_by="Josh Smith", 
+                                        envs=[production],
+                                        release_key=release_info.release_key,
+          )
+          logging.info(f"Deploy Info for { deploy_frontend.deploy_key} collected.")
 
 
-    deploy_store = DeployInfo(deploy_key = release_info.release_key+":sbstore", 
-                              container_id = "sbstore", 
-                              container_version="1.7",
-                              git_url = "https://github.com/mybiz/sbstore.git", 
-                              approved = True, 
-                              approved_by = "Bob Johnson", 
-                              envs=[production],
-                              release_key = release_info.release_key,
-                            )
-    logging.info(f"Deploy Info for { deploy_store.deploy_key} collected.")
-    
-    deploy_backend_for_frontend = DeployInfo(deploy_key = release_info.release_key+":BFF", 
-                                             container_id = "backendforfrontend", 
-                                             container_version="1.7",
-                                             git_url = "https://github.com/mybiz/backendff.git", 
-                                             approved = True, 
-                                             approved_by = "James Garner", 
-                                             envs=[production],
-                                             release_key = release_info.release_key,
-                                            )
+          deploy_store = DeployInfo(deploy_key = release_info.release_key+":sbstore", 
+                                        container_id = "sbstore", 
+                                        container_version="1.7",
+                                        git_url = "https://github.com/mybiz/sbstore.git", 
+                                        approved = True, 
+                                        approved_by = "Bob Johnson", 
+                                        envs=[production],
+                                        release_key = release_info.release_key,
+                                   )
+          logging.info(f"Deploy Info for { deploy_store.deploy_key} collected.")
+          
+          deploy_backend_for_frontend = DeployInfo(deploy_key = release_info.release_key+":BFF", 
+                                                       container_id = "backendforfrontend", 
+                                                       container_version="1.7",
+                                                       git_url = "https://github.com/mybiz/backendff.git", 
+                                                       approved = True, 
+                                                       approved_by = "James Garner", 
+                                                       envs=[production],
+                                                       release_key = release_info.release_key,
+                                                  )
+    elif release_info.release_key == "RELEASE-JAN-24-ALPHA-DEV" :
+          deploy_frontend = DeployInfo(deploy_key= release_info.release_key+":frontend", 
+                                        container_id= "frontend", 
+                                        container_version="1.2", 
+                                        git_url="https://github.com/mybiz/coolfrontend", 
+                                        approved=True, 
+                                        approved_by="Josh Smith", 
+                                        envs=[development],
+                                        release_key=release_info.release_key,
+          )
+          logging.info(f"Deploy Info for { deploy_frontend.deploy_key} collected.")
+
+
+          deploy_store = DeployInfo(deploy_key = release_info.release_key+":sbstore", 
+                                        container_id = "sbstore", 
+                                        container_version="1.8",
+                                        git_url = "https://github.com/mybiz/sbstore.git", 
+                                        approved = True, 
+                                        approved_by = "Bob Johnson", 
+                                        envs=[development],
+                                        release_key = release_info.release_key,
+                                   )
+          logging.info(f"Deploy Info for { deploy_store.deploy_key} collected.")
+          
+          deploy_backend_for_frontend = DeployInfo(deploy_key = release_info.release_key+":BFF", 
+                                                       container_id = "backendforfrontend", 
+                                                       container_version="1.8",
+                                                       git_url = "https://github.com/mybiz/backendff.git", 
+                                                       approved = True, 
+                                                       approved_by = "James Garner", 
+                                                       envs=[development],
+                                                       release_key = release_info.release_key,
+                                                  )
+    elif release_info.release_key == "RELEASE-JAN-24-ALPHA-QC" :
+          deploy_frontend = DeployInfo(deploy_key= release_info.release_key+":frontend", 
+                                        container_id= "frontend", 
+                                        container_version="1.2", 
+                                        git_url="https://github.com/mybiz/coolfrontend", 
+                                        approved=True, 
+                                        approved_by="Josh Smith", 
+                                        envs=[testing, qualitycontrol],
+                                        release_key=release_info.release_key,
+          )
+          logging.info(f"Deploy Info for { deploy_frontend.deploy_key} collected.")
+
+
+          deploy_store = DeployInfo(deploy_key = release_info.release_key+":sbstore", 
+                                        container_id = "sbstore", 
+                                        container_version="1.8",
+                                        git_url = "https://github.com/mybiz/sbstore.git", 
+                                        approved = True, 
+                                        approved_by = "Bob Johnson", 
+                                        envs=[testing, qualitycontrol],
+                                        release_key = release_info.release_key,
+                                   )
+          logging.info(f"Deploy Info for { deploy_store.deploy_key} collected.")
+          
+          deploy_backend_for_frontend = DeployInfo(deploy_key = release_info.release_key+":BFF", 
+                                                       container_id = "backendforfrontend", 
+                                                       container_version="1.8",
+                                                       git_url = "https://github.com/mybiz/backendff.git", 
+                                                       approved = True, 
+                                                       approved_by = "James Garner", 
+                                                       envs=[testing, qualitycontrol],
+                                                       release_key = release_info.release_key,
+                                                  )
+    elif release_info.release_key == "RELEASE-JAN-24-ALPHA-PROD":
+
+          deploy_frontend = DeployInfo(deploy_key= release_info.release_key+":frontend", 
+                                        container_id= "frontend", 
+                                        container_version="1.2", 
+                                        git_url="https://github.com/mybiz/coolfrontend", 
+                                        approved=True, 
+                                        approved_by="Josh Smith", 
+                                        envs=[production],
+                                        release_key=release_info.release_key,
+          )
+          logging.info(f"Deploy Info for { deploy_frontend.deploy_key} collected.")
+
+
+          deploy_store = DeployInfo(deploy_key = release_info.release_key+":sbstore", 
+                                        container_id = "sbstore", 
+                                        container_version="1.8",
+                                        git_url = "https://github.com/mybiz/sbstore.git", 
+                                        approved = True, 
+                                        approved_by = "Bob Johnson", 
+                                        envs=[production],
+                                        release_key = release_info.release_key,
+                                   )
+          logging.info(f"Deploy Info for { deploy_store.deploy_key} collected.")
+          
+          deploy_backend_for_frontend = DeployInfo(deploy_key = release_info.release_key+":BFF", 
+                                                       container_id = "backendforfrontend", 
+                                                       container_version="1.8",
+                                                       git_url = "https://github.com/mybiz/backendff.git", 
+                                                       approved = True, 
+                                                       approved_by = "James Garner", 
+                                                       envs=[production],
+                                                       release_key = release_info.release_key,
+                                                  )
+    elif release_info.release_key == "RELEASE-NOV-23-INITIAL":
+
+          deploy_frontend = DeployInfo(deploy_key= release_info.release_key+":frontend", 
+                                        container_id= "frontend", 
+                                        container_version="1.0", 
+                                        git_url="https://github.com/mybiz/coolfrontend", 
+                                        approved=True, 
+                                        approved_by="Josh Smith", 
+                                        envs=[development, testing, qualitycontrol, production],
+                                        release_key=release_info.release_key,
+          )
+          logging.info(f"Deploy Info for { deploy_frontend.deploy_key} collected.")
+
+
+          deploy_store = DeployInfo(deploy_key = release_info.release_key+":sbstore", 
+                                        container_id = "sbstore", 
+                                        container_version="1.0",
+                                        git_url = "https://github.com/mybiz/sbstore.git", 
+                                        approved = True, 
+                                        approved_by = "Bob Johnson", 
+                                        envs=[development, testing, qualitycontrol, production],
+                                        release_key = release_info.release_key,
+                                   )
+          logging.info(f"Deploy Info for { deploy_store.deploy_key} collected.")
+          
+          deploy_backend_for_frontend = DeployInfo(deploy_key = release_info.release_key+":BFF", 
+                                                       container_id = "backendforfrontend", 
+                                                       container_version="1.0",
+                                                       git_url = "https://github.com/mybiz/backendff.git", 
+                                                       approved = True, 
+                                                       approved_by = "James Garner", 
+                                                       envs=[development, testing, qualitycontrol, production],
+                                                       release_key = release_info.release_key,
+                                                  ) 
+    elif release_info.release_key == "RELEASE-NOV-23-HOTFIX-STAGE":
+
+          deploy_frontend = DeployInfo(deploy_key= release_info.release_key+":frontend", 
+                                        container_id= "frontend", 
+                                        container_version="1.1", 
+                                        git_url="https://github.com/mybiz/coolfrontend", 
+                                        approved=True, 
+                                        approved_by="Josh Smith", 
+                                        envs=[development, testing, qualitycontrol],
+                                        release_key=release_info.release_key,
+          )
+          logging.info(f"Deploy Info for { deploy_frontend.deploy_key} collected.")
+
+
+          deploy_store = DeployInfo(deploy_key = release_info.release_key+":sbstore", 
+                                        container_id = "sbstore", 
+                                        container_version="1.7",
+                                        git_url = "https://github.com/mybiz/sbstore.git", 
+                                        approved = True, 
+                                        approved_by = "Bob Johnson", 
+                                        envs=[development, testing, qualitycontrol],
+                                        release_key = release_info.release_key,
+                                   )
+          logging.info(f"Deploy Info for { deploy_store.deploy_key} collected.")
+          
+          deploy_backend_for_frontend = DeployInfo(deploy_key = release_info.release_key+":BFF", 
+                                                       container_id = "backendforfrontend", 
+                                                       container_version="1.7",
+                                                       git_url = "https://github.com/mybiz/backendff.git", 
+                                                       approved = True, 
+                                                       approved_by = "James Garner", 
+                                                       envs=[development, testing, qualitycontrol],
+                                                       release_key = release_info.release_key,
+                                                  )   
+    else:
+         raise RuntimeError(f"Release Exception: no release info found for {release_info.release_key}! Release failed!")
+          
     
     logging.info(f"Deploy Info for { deploy_backend_for_frontend.deploy_key} collected.")
 
@@ -122,7 +297,12 @@ def build(deployinfo: DeployInfo) -> str:
     
     #todo fail in a human-repairable way, to simulate a security or build problem that can be repaired
     #todo make new artifacts in dev with new container_version
-    #todo create output artifacts to simulate test results and scans
+    artifactname = deployinfo.container_id + ":" + deployinfo.container_version
+    f = open(f"./environments/artifactory/{artifactname}", "a")
+    f.write(f"\nbuilt {artifactname}")
+    f.close()
+
+     #todo create output artifacts to simulate test results and scans
     #todo - update container version with new build info?
 
     logging.debug(f"Build successful for {deployinfo.deploy_key}, new artifact in Dev.")
@@ -142,6 +322,7 @@ def test(deployinfo: DeployInfo, evn: str) -> str:
          raise RuntimeError(f"Test Exception: test failed, could not complete test.")
     
     #todo fail in a human-repairable way, to simulate a performance, security, or quality problem that can be repaired
+    #todo create output artifacts to simulate test results and scans
     
     logging.debug(f"Test successful for {deployinfo.deploy_key}, new artifact is working in Dev.")
     return "TESTS SUCCESSFUL"
@@ -168,18 +349,35 @@ def deploy(deployinfo: DeployInfo, destination: str) -> str:
     output: status str
     """
     
-    logging.info(f"Deploying {deployinfo.deploy_key}")
-
+    logging.info(f"Deploying {deployinfo.deploy_key}")  
+    
+    artifactname = deployinfo.container_id + ":" + deployinfo.container_version
+    source = development
+    if destination == testing:
+          source = development
+    elif destination == qualitycontrol:
+          source = testing
+    elif destination == production:
+          source = qualitycontrol
+    elif destination == development:
+          source = "artifactory"
+    else :
+          logging.warn(f"Else-if Statement in deploy() hit default case, there's probably a bug.")
+    
+    # delete existing artifacts
+    logging.debug(f"Removing old artifacts- ./environments/{destination}/{deployinfo.container_id}* for {deployinfo.deploy_key}")
+    for f in glob.glob(f"./environments/{destination}/{deployinfo.container_id}*"):
+        os.remove(f)
+    logging.debug(f"Moving {artifactname} from {source} to {destination} for {deployinfo.deploy_key}")
+    shutil.copyfile(f"./environments/{source}/{artifactname}", f"./environments/{destination}/{artifactname}")
+    logging.debug(f"Artifact Move complete for {deployinfo.deploy_key}...restarting {deployinfo.container_id}.")
+    #todo something with config?
     logging.debug(f"Updating Config for {deployinfo.deploy_key} from {deployinfo.git_url}")
     logging.debug(f"Config update complete for {deployinfo.deploy_key}")
-    logging.debug(f"Moving {deployinfo.container_id}:{deployinfo.container_version} to {destination} for {deployinfo.deploy_key}")
-    logging.debug(f"Artifact Move complete for {deployinfo.deploy_key}...restarting {deployinfo.container_id}.")
 
     # throw an error here sometimes
     if utils.isErrorRarely() :
          raise RuntimeError(f"Deploy Exception: deploy failed, app not deployed.")
-    
-    #todo actually move stuff around into folders
-    
+        
     logging.info(f"Deploy successful for {deployinfo.deploy_key}, new artifact is deployed to {destination}.")
     return "DEPLOY SUCCESSFUL"
