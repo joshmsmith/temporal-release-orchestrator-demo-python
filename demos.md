@@ -29,7 +29,7 @@ You can also view the workflow requestor logs:
 ```shell
 Result: Release RELEASE-NOV-23-INITIAL: SUCCESS
 ```
-See the worker logs some interesting information:
+See the worker logs for some interesting information:
 ![WorkerLogs](./resources/release-orchestration-worker-logs.png)
 
 Finally, you can see that the artifacts - just simple text files for the demo - are created in the folders as specified in the workflows and release process functions.
@@ -98,6 +98,6 @@ In [utils.py](./run_workflow.py), try going through the releases and note that t
 To reset it, you can just release "RELEASE-NOV-23-INITIAL" again. The artifacts will still be in "artifactory". You can also just delete the files and they will be "built" and "deployed" when you run the initial release.
 
 ## Build a Release Management System
-If you want to turn this into a real application, take a look at the todo.md
+If you want to turn this into a real application, take a look at the [todo.md](./todo.md).
 
 
